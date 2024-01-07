@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <title>Model State Operations</title>
+  <nav class="navbar navbar-expand-md bg-primary fixed-top p-2" id="navbar">
+    <div class="container-fluid">
+      <div class="navbar-brand"><a href="#sectionX"><img alt="Vicko Pic" src="/visuals/thevicko-lite.jpg" class="rounded-5" height="40" width="40" id="brand-n"></a></div>
+      <span class="h6 badge bg-warning">Site Still Under Construction!</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarMore">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navBarMore">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#captain">Start</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#out-I-">Compilation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#sectionX">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#foot">FAQ</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+</head>
+
+<body>
+  <main class="mt-5 pt-3">
+    <div class="bg-dark text-light p-3 mt-5">Model to train, <span class="badge bg-primary" id="model-name">NoBrainer</span></div>
+    <section class="p-5">
+      <div class="card mb-5">
+        <div class="card-header">Model MetaData</div>
+        <div class="card-body">
+          <div class=""><label class="text-secondary pe-2">Type:</label><span class="text-primary">Text Model</span></div>
+          <div class=""><label class="text-secondary pe-2">Total Weights:</label><span class="text-primary">31</span></div>
+          <div class=""><label class="text-secondary pe-2">Total Biases:</label><span class="text-primary">5</span></div>
+          <div class=""><label class="text-secondary pe-2">Total Layers:</label><span class="text-primary">7</span></div>
+          <div class=""><label class="text-secondary pe-2">Total Neurons:</label><span class="text-primary">70</span></div>
+          <div class=""><label class="text-secondary pe-2">Learning Rate:</label><span class="text-primary">0.001</span></div>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">Model Performance</div>
+        <div class="card-body">
+          <p>Charts goes in here...</p>
+        </div>
+        <div class="card-footer row g-0 text-center">
+          <div class="col"><label class="text-secondary pe-2">Loss:</label><span class="text-danger">0.015</span></div>
+          <div class="col"><label class="text-secondary pe-2">Epochs:</label><span class="text-primary">0.015</span></div>
+          <div class="col"><label class="text-secondary pe-2">Optim:</label><span class="text-success">0.015</span></div>
+        </div>
+      </div>
+      </div>
+    </section>
+  </main>
+</body>
+
+<script src="smart.js"></script>
+
+</html>
