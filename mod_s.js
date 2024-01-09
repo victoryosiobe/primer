@@ -3,7 +3,7 @@ const start = (() => {
   const vocabSize = vocabulary.length;
 
   function createInputRepresentation(word) {
-    const inputRep = Array(vocabSize).fill(0);
+    const inputRep = Array(vocabSize).fill(1); //instead of 0 to make input to model okay as 0 turns other stuffs to 0
     for (let i = 0; i < word.length; i++) {
       const charIndex = vocabulary.indexOf(word[i]);
       const positionalValue = i + 1; // Start positional encoding from 1
@@ -13,38 +13,62 @@ const start = (() => {
   }
 
   class SubwordModel {
-    constructor(vocabSize, hidden1Size, hidden2Size) {
+    constructor(inputSize, hidden1Size, hidden2Size, outputSize) {
       // Initialize weights and biases randomly
-      this.w1 = Array(vocabSize).fill(0).map(() => Array(hidden1Size).fill(Math.random()));
-      this.b1 = Array(hidden1Size).fill(0);
-      this.w2 = Array(hidden1Size).fill(0).map(() => Array(hidden2Size).fill(Math.random()));
-      this.b2 = Array(hidden2Size).fill(0);
-      this.w3 = Array(hidden2Size).fill(0).map(() => Array(1).fill(Math.random()));
-      this.b3 = Array(1).fill(0);
+    this.MOBJ = { //we could make the random diffrent. As they are, they  are same in their respective arrays.
+      0: {w: Array(inputSize).fill(this.random()), b: Array(inputSize).fill(this.random())},
+      1: {w: Array(hidden1Size).fill(this.random()), b: Array(hidden1Size).fill(this.random()), v: 0},
+      2: {w: Array(hidden2Size).fill(this.random()), b: Array(hidden2Size).fill(this.random()), v: 0},
+      3: {w: Array(outputSize).fill(this.random()), b: Array(outputSize).fill(this.random()), v: 0}
+      }
     }
-
     predict(word) {
       // Generate input representation with positional encoding
       const inputRep = createInputRepresentation(word);
-
-      // Feedforward through hidden layers with ReLU activation
-      const h1 = inputRep.map((x, i) => this.actiFn(x * this.w1[i].reduce((sum, w) => sum + w) + this.b1[i], 'sigmoid'));
-      const h2 = h1.map((x, i) => this.actiFn(x * this.w2[i].reduce((sum, w) => sum + w) + this.b2[i], 'sigmoid'));
-      const output = h2.map((x, i) => this.actiFn(x * this.w3[i][0] + this.b3[0], 'relu'));
-
-      return output[0]; // Return predicted split index
+      const MOBJ = this.MOBJ
+      const actiFn = this.actiFn
+      let output
+      let i = 0
+      const mIL = Object.values(MOBJ).length
+      while(i < mIL){
+        if(i === 0){
+          MOBJ[i + 1].v = inputRep.map((v, j) => actiFn(v * MOBJ[i].w[j] + MOBJ[i].b[j], 'sigmoid'))
+          i++
+          continue
+        }
+        // console.log(MOBJ[i].v, i)
+        /*  if(i === (mIL - 1)){ // output node operation
+            MOBJ[i + 1].v = MOBJ[i].w.map((w, j) => { 
+          return actiFn(MOBJ[i].v.map(v => v * w + MOBJ[i].b[j]).reduce((acc, v) => acc + v, 0), 'relu')
+          })
+            break
+        }
+      */
+        if(!(MOBJ[i + 1] === undefined)){
+          MOBJ[i + 1].v = MOBJ[i].w.map((w, j) => {
+       return  actiFn(MOBJ[i].v.map(v => v * w + MOBJ[i].b[j]).reduce((acc, v) => acc + v, 0), 'sigmoid')
+       })
+        } else break
+        i++
+      }
+      return Object.values(MOBJ).pop().v; // Return predicted split index
+      
     }
 
     actiFn(x, type){
      if(type === 'relu') return Math.max(0, x)
      if(type === 'sigmoid') return 1/(1 + Math.exp(-x))
     }
+
+    random(){
+      return Math.random()
+    }
   }
 
   // Example usage
-  const model = new SubwordModel(vocabSize, 200, 100);
+  const model = new SubwordModel(vocabSize, 200, 100, 3);
   const word = "attend";
   const splitIndex = model.predict(word);
-  return `Predicted split index for '${word}': ${splitIndex}`
+  return `Predicted split index for '${word}': ${splitIndex.length}`
 })
 module.exports = start
