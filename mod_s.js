@@ -53,11 +53,11 @@ const start = (() => {
         for(let k = 0; k < clv.length; k++){
           for(let l = 0; l < plv.length; l++){
             tempv += plv[l] * clw[k] + clb[k]
-            console.log(tempv, "-f")
+            // console.log(tempv, "-f")
           }
           I === mIL ? MOBJ[i].v[k] = actiFn(tempv, 'relu') : MOBJ[i].v[k] = actiFn(tempv, 'sigmoid')
         }
-        console.log(MOBJ[i].v);
+        //console.log(MOBJ[i].v);
         I === mIL ? output = MOBJ[i].v : 0
         i++
        }
