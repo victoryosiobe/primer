@@ -16,52 +16,62 @@ const start = (() => {
     constructor(inputSize, hidden1Size, hidden2Size, outputSize) {
       // Initialize weights and biases randomly
     this.MOBJ = { //we could make the random diffrent. As they are, they  are same in their respective arrays.
-      0: {w: Array(inputSize).fill(this.random()), b: Array(inputSize).fill(this.random())},
-      1: {w: Array(hidden1Size).fill(this.random()), b: Array(hidden1Size).fill(this.random()), v: 0},
-      2: {w: Array(hidden2Size).fill(this.random()), b: Array(hidden2Size).fill(this.random()), v: 0},
-      3: {w: Array(outputSize).fill(this.random()), b: Array(outputSize).fill(this.random()), v: 0}
+      0: {v: Array(inputSize).fill(0)},
+      1: {w: Array(hidden1Size).fill(this.random()), b: Array(hidden1Size).fill(this.random()), v: Array(hidden1Size).fill(0)},
+      2: {w: Array(hidden2Size).fill(this.random()), b: Array(hidden2Size).fill(this.random()), v: Array(hidden2Size).fill(0)},
+      3: {w: Array(outputSize).fill(this.random()), b: Array(outputSize).fill(this.random()), v: Array(outputSize).fill(0)}
       }
     }
-    predict(word) {
-      // Generate input representation with positional encoding
+
+    predict(word){
+       // Generate input representation with positional encoding
       const inputRep = createInputRepresentation(word);
       const MOBJ = this.MOBJ
       const actiFn = this.actiFn
       let output
-      let i = 0
+      let i = 1
       const mIL = Object.values(MOBJ).length
-      while(i < mIL){
-        if(i === 0){
-          MOBJ[i + 1].v = inputRep.map((v, j) => actiFn(v * MOBJ[i].w[j] + MOBJ[i].b[j], 'sigmoid'))
-          i++
-          continue
-        }
-        // console.log(MOBJ[i].v, i)
-        /*  if(i === (mIL - 1)){ // output node operation
-            MOBJ[i + 1].v = MOBJ[i].w.map((w, j) => { 
-          return actiFn(MOBJ[i].v.map(v => v * w + MOBJ[i].b[j]).reduce((acc, v) => acc + v, 0), 'relu')
-          })
-            break
-        }
-      */
-        if(!(MOBJ[i + 1] === undefined)){
-          MOBJ[i + 1].v = MOBJ[i].w.map((w, j) => {
-       return  actiFn(MOBJ[i].v.map(v => v * w + MOBJ[i].b[j]).reduce((acc, v) => acc + v, 0), 'sigmoid')
-       })
-        } else break
-        i++
+
+      //put input values in model input node
+      for(let j = 0; j < inputRep.length; j++){
+        MOBJ[0].v[j] = inputRep[j]
       }
-      return Object.values(MOBJ).pop().v; // Return predicted split index
       
+      while(i < mIL){
+      //l: layer, c: current, p: previous, w: weight, b: bias, v: value
+        const cl = MOBJ[i]
+        const pl = MOBJ[i - 1]
+        const clw = cl.w
+        const clb = cl.b
+        const clv = cl.v
+        const plw = pl.w
+        const plb = pl.b
+        const plv = pl.v
+        let tempv = 0
+        const I = i + 1
+
+        for(let k = 0; k < clv.length; k++){
+          for(let l = 0; l < plv.length; l++){
+            tempv += plv[l] * clw[k] + clb[k]
+            console.log(tempv, "-f")
+          }
+          I === mIL ? MOBJ[i].v[k] = actiFn(tempv, 'relu') : MOBJ[i].v[k] = actiFn(tempv, 'sigmoid')
+        }
+        console.log(MOBJ[i].v);
+        I === mIL ? output = MOBJ[i].v : 0
+        i++
+       }
+      return output
     }
 
     actiFn(x, type){
-     if(type === 'relu') return Math.max(0, x)
-     if(type === 'sigmoid') return 1/(1 + Math.exp(-x))
+      if(type === 'relu') return Math.max(0, x)
+      if(type === 'sigmoid') return 1/(1 + Math.exp(-x))
     }
 
-    random(){
-      return Math.random()
+    random(min = 0.0000001, max = 0.0003){
+       //Returns a random number between min (inclusive) and max (exclusive)
+         return Math.random() * (max - min) + min;
     }
   }
 
@@ -69,6 +79,6 @@ const start = (() => {
   const model = new SubwordModel(vocabSize, 200, 100, 3);
   const word = "attend";
   const splitIndex = model.predict(word);
-  return `Predicted split index for '${word}': ${splitIndex.length}`
+  return `Predicted split index for '${word}': ${splitIndex}`
 })
 module.exports = start
