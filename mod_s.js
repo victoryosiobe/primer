@@ -67,9 +67,7 @@ const start = (() => {
     }
 
     softmax(x){
-      if(x.length > 1){
-      }
-      return x
+      return Math.round(x)
     }
 
     actiFn(x, type){
@@ -77,7 +75,7 @@ const start = (() => {
       if(type === 'sigmoid') return 1/(1 + Math.exp(-x))
     }
 
-    random(min = 0.0001, max = 0.003){
+    random(min = 0.00001, max = 0.0023){
        //Returns a random number between min (inclusive) and max (exclusive)
          return Math.random() * (max - min) + min;
     }
@@ -85,7 +83,7 @@ const start = (() => {
 
   // Example usage
   const model = new SubwordModel(vocabSize, 215, 107, 1);
-  const word = "attend";
+  const word = "occurrence";
   const splitIndex = model.predict(word);
   return `Predicted split index for '${word}': ${splitIndex}`
 })
