@@ -44,8 +44,8 @@ const start = (() => {
         const clw = cl.w
         const clb = cl.b
         const clv = cl.v
-        const plw = pl.w
-        const plb = pl.b
+        //const plw = pl.w
+        //const plb = pl.b
         const plv = pl.v
         let tempv = 0
         const I = i + 1
@@ -55,13 +55,21 @@ const start = (() => {
             tempv += plv[l] * clw[k] + clb[k]
             // console.log(tempv, "-f")
           }
-          I === mIL ? MOBJ[i].v[k] = actiFn(tempv, 'relu') : MOBJ[i].v[k] = actiFn(tempv, 'sigmoid')
+         // I === mIL ?
+            MOBJ[i].v[k] = actiFn(tempv, 'relu') 
+            //: MOBJ[i].v[k] = actiFn(tempv, 'sigmoid')
         }
         //console.log(MOBJ[i].v);
-        I === mIL ? output = MOBJ[i].v : 0
+        I === mIL ? output = this.softmax(MOBJ[i].v) : 0
         i++
        }
       return output
+    }
+
+    softmax(x){
+      if(x.length > 1){
+      }
+      return x
     }
 
     actiFn(x, type){
@@ -69,14 +77,14 @@ const start = (() => {
       if(type === 'sigmoid') return 1/(1 + Math.exp(-x))
     }
 
-    random(min = 0.0000001, max = 0.0003){
+    random(min = 0.0001, max = 0.003){
        //Returns a random number between min (inclusive) and max (exclusive)
          return Math.random() * (max - min) + min;
     }
   }
 
   // Example usage
-  const model = new SubwordModel(vocabSize, 200, 100, 3);
+  const model = new SubwordModel(vocabSize, 215, 107, 1);
   const word = "attend";
   const splitIndex = model.predict(word);
   return `Predicted split index for '${word}': ${splitIndex}`

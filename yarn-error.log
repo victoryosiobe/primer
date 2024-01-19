@@ -1,0 +1,59 @@
+Arguments: 
+  /data/data/com.termux/files/usr/bin/node /data/data/com.termux/files/usr/share/yarn/bin/yarn.js add nodemon -g
+
+PATH: 
+  /data/data/com.termux/files/home/.local/share/nvim/mason/bin:/data/data/com.termux/files/usr/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.2.0
+
+Platform: 
+  android arm64
+
+Trace: 
+  Error [ERR_SOCKET_CONNECTION_TIMEOUT]: Socket connection timeout
+      at new NodeError (node:internal/errors:399:5)
+      at internalConnectMultiple (node:net:1099:20)
+      at Timeout.internalConnectMultipleTimeout (node:net:1638:3)
+      at listOnTimeout (node:internal/timers:575:11)
+      at process.processTimers (node:internal/timers:514:7)
+
+npm manifest: 
+  {
+    "name": "primer",
+    "version": "0.0.0",
+    "description": "Bunch of tested models.",
+    "main": "io_backend.js",
+    "dependencies": {
+      "bootstrap": "^5.3.2"
+    },
+    "devDependencies": {},
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/victoryosiobe/primer.git"
+    },
+    "keywords": [
+      "Low-Level-Models",
+      "Small-Models",
+      "Simple-Task-Models",
+      "Nlp-Models"
+    ],
+    "author": "victory osiobe",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/victoryosiobe/primer/issues"
+    },
+    "homepage": "https://github.com/victoryosiobe/primer#readme"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
