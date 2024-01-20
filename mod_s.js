@@ -1,3 +1,4 @@
+const {serialize, deserialize} = require('./serializer.js')
 const start = (() => {
   const vocabulary = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '-']; // Replace with your full vocabulary
   const vocabSize = vocabulary.length;
@@ -15,12 +16,12 @@ const start = (() => {
   class SubwordModel {
     constructor(inputSize, hidden1Size, hidden2Size, outputSize) {
       // Initialize weights and biases randomly
-    this.MOBJ = { //we could make the random diffrent. As they are, they  are same in their respective arrays.
+    this.MOBJ = deserialize()/*{ //we could make the random diffrent. As they are, they  are same in their respective arrays.
       0: {v: Array(inputSize).fill(0)},
-      1: {w: Array(hidden1Size).fill(this.random()), b: Array(hidden1Size).fill(this.random()), v: Array(hidden1Size).fill(0)},
-      2: {w: Array(hidden2Size).fill(this.random()), b: Array(hidden2Size).fill(this.random()), v: Array(hidden2Size).fill(0)},
-      3: {w: Array(outputSize).fill(this.random()), b: Array(outputSize).fill(this.random()), v: Array(outputSize).fill(0)}
-      }
+      1: {w: Array(hidden1Size).fill(0).fill(0).map(_ => this.random()), b: Array(hidden1Size).fill(0).map(_ => this.random()), v: Array(hidden1Size).fill(0)},
+      2: {w: Array(hidden2Size).fill(0).map(_ => this.random()), b: Array(hidden2Size).fill(0).map(_ => this.random()), v: Array(hidden2Size).fill(0)},
+      3: {w: Array(outputSize).fill(0).map(_ => this.random()), b: Array(outputSize).fill(0).map(_ => this.random()), v: Array(outputSize).fill(0)}
+      }*/
     }
 
     predict(word){
@@ -75,7 +76,7 @@ const start = (() => {
       if(type === 'sigmoid') return 1/(1 + Math.exp(-x))
     }
 
-    random(min = 0.00001, max = 0.0023){
+    random(min = 0.000001, max = 0.0015){
        //Returns a random number between min (inclusive) and max (exclusive)
          return Math.random() * (max - min) + min;
     }
@@ -83,8 +84,9 @@ const start = (() => {
 
   // Example usage
   const model = new SubwordModel(vocabSize, 215, 107, 1);
-  const word = "occurrence";
+ // serialize(model.MOBJ)
+  const word = "extend";
   const splitIndex = model.predict(word);
   return `Predicted split index for '${word}': ${splitIndex}`
 })
-module.exports = start
+  module.exports = start
