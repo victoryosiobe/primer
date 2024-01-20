@@ -85,7 +85,7 @@ const start = (() => {
   // Example usage
   const model = new SubwordModel(vocabSize, 215, 107, 1);
  // serialize(model.MOBJ)
-  const word = "extend";
+  const word = "happy";
   const splitIndex = model.predict(word);
   return `Predicted split index for '${word}': ${splitIndex}`
 })
