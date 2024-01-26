@@ -18,7 +18,7 @@ function serialize(data, file = path.join(__dirname, dest)) {
 function saveFn(file, data) {
   const tempArr = []
   tempArr.push(data)
-  let fileContent = fs.readFileSync(file, 'utf8')
+    let fileContent = fs.readFileSync(file, 'utf8')
   fileContent = JSON.parse(fileContent)
   fileContent.push(tempArr)
   fileContent = fileContent.flat()
