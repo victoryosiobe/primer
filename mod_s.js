@@ -55,6 +55,17 @@ const start = () => {
       }*/
     }
 
+    train() {
+      //Loop:
+      //FeedForward First: Feed In Sample From dataset, get output.
+      //Do Stupid Maths, Calculate Loss, Cost by how Output Deviated from sample target.
+      //Do uome Backpropagation. Serialize Model.
+      //Display Process to Frontend, Per Loop, or Epochs.
+      //Implement Logics, to continue looping, or stopping.
+      //Implemnt Logic to transfer training samples from dataset file, to usedatset file.
+      //Then we Implement finetuning.
+    }
+
     predict(word) {
       // Generate input representation with positional encoding
       const inputRep = createInputRepresentation(word);
