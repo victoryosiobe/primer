@@ -49,9 +49,9 @@ const start = () => {
       this.MOBJ =
         deserialize(); /*{ //we could make the random diffrent. As they are, they  are same in their respective arrays.
       0: {v: Array(inputSize).fill(0)},
-      1: {w: Array(hidden1Size).fill(0).fill(0).map(_ => this.random()), b: Array(hidden1Size).fill(0).map(_ => this.random()), v: Array(hidden1Size).fill(0)},
-      2: {w: Array(hidden2Size).fill(0).map(_ => this.random()), b: Array(hidden2Size).fill(0).map(_ => this.random()), v: Array(hidden2Size).fill(0)},
-      3: {w: Array(outputSize).fill(0).map(_ => this.random()), b: Array(outputSize).fill(0).map(_ => this.random()), v: Array(outputSize).fill(0)}
+      1: {w: Array(hidden1Size).fill(0).fill(0).map(_ => this.randomParams()), b: Array(hidden1Size).fill(0).map(_ => this.randomParams()), v: Array(hidden1Size).fill(0)},
+      2: {w: Array(hidden2Size).fill(0).map(_ => this.randomParams()), b: Array(hidden2Size).fill(0).map(_ => this.randomParams()), v: Array(hidden2Size).fill(0)},
+      3: {w: Array(outputSize).fill(0).map(_ => this.randomParams()), b: Array(outputSize).fill(0).map(_ => this.randomParams()), v: Array(outputSize).fill(0)}
       }*/
     }
 
@@ -107,12 +107,12 @@ const start = () => {
       if (type === "sigmoid") return 1 / (1 + Math.exp(-x));
     }
 
-    random(min = 0.000001, max = 0.0015) {
+    randomParams(min = 0.000001, max = 0.0015) {
       //Returns a random number between min (inclusive) and max (exclusive)
-      return Math.random() * (max - min) + min;
+      return Math.randomParams() * (max - min) + min;
     }
 
-    data(index) {
+    dataSet(path = "./dataset") {
       function readFileContent(filePath) {
         try {
           const data = fs.readFileSync(filePath, "utf8");
@@ -124,9 +124,8 @@ const start = () => {
       }
 
       // Example usage
-      const filePath = "./dataset";
 
-      const fileContent = readFileContent(filePath);
+      const fileContent = readFileContent(path);
 
       if (fileContent !== null) {
         return fileContent
@@ -139,7 +138,7 @@ const start = () => {
     learnRate = 0.01;
     batchSize = 3;
     patience = 5; //how much iteration to continue when model is not permorming well
-    sampleSize = this.data().length;
+    sampleSize = this.dataSet().length;
   }
 
   // Example usage
@@ -148,7 +147,8 @@ const start = () => {
   const word = "extend";
   console.log("Rep: ", createInputRepresentation(word));
   const splitIndex = model.predict(word);
-  // console.log(model.sampleSize, "xup");
+  // // console.log(model.sampleSize, "xup");
+  // console.log(model.dataSet());
   return `Predicted split index for '${word}': ${splitIndex}`;
 };
 module.exports = start;
