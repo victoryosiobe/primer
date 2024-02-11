@@ -1,5 +1,5 @@
 const fs = require("fs");
-
+const trainDataFormat = require("./dataset/trainDataFormat.js");
 const { serialize, deserialize } = require("./serializer.js");
 const start = () => {
   const vocabulary = [
@@ -123,7 +123,7 @@ const start = () => {
       return Math.randomParams() * (max - min) + min;
     }
 
-    dataSet(path = "./dataset") {
+    dataSet(path = "./dataset/trainSetup") {
       function readFileContent(filePath) {
         try {
           const data = fs.readFileSync(filePath, "utf8");
@@ -139,10 +139,7 @@ const start = () => {
       const fileContent = readFileContent(path);
 
       if (fileContent !== null) {
-        return fileContent
-          .toString()
-          .split("\n")
-          .map((v) => v.split(" "));
+        return trainDataFormat(fileContent.toString());
       }
     }
 
