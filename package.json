@@ -2,7 +2,8 @@
   "name": "primexo",
   "version": "0.0.0",
   "description": "Repo for deploying small helpful models with little or no dependencies.  ",
-  "main": "wordpipe.js",
+  "main": "io_backend.js",
+  "comment": "switch main field to wordpipe.js to generate dataset for pending target on server startup.",
   "dependencies": {
     "bootstrap": "^5.3.2"
   },

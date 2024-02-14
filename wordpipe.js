@@ -45,7 +45,11 @@ pythonProcess.on("close", (code) => {
   }
   batchSet = [...batchSet].join("\n"); //sepetate with newline, so i can add target indexes whenever.
 
-  fs.appendFileSync(trainSetupFile, batchSet, "utf8");
+  fs.appendFileSync(
+    trainSetupFile,
+    "\n--New--Untarget--Data--\n" + batchSet,
+    "utf8",
+  );
 
   console.log("performace", performance.now() - tp);
 });

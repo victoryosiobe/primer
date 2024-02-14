@@ -55,7 +55,7 @@ const start = () => {
       }*/
     }
 
-    train() {
+    train(dataset, epochs) {
       //Loop:
       //FeedForward First: Feed In Sample From dataset, get output.
       //Do Stupid Maths, Calculate Loss, Cost by how Output Deviated from sample target.
@@ -64,6 +64,25 @@ const start = () => {
       //Implement Logics, to continue looping, or stopping.
       //Implemnt Logic to transfer training samples from dataset file, to usedatset file.
       //Then we Implement finetuning.
+      let i = 0;
+      while (i < dataset.length) {
+        const word = dataset[i].word;
+        const target = dataset[i].target;
+        let j = 0;
+        let patience = this.patience;
+        while (j < epochs) {
+          if (patience === 0) break;
+          this.iterations++;
+          const output = this.predict(word); //get index value
+          this.lossCostFn(output, target, this.iterations);
+          //Here we implement Backpropagation. Then seriakize model
+          if ("modelDidNotImprove") patience--;
+          j++;
+        }
+        //Here we remove the word from dataset and accumulate them in usedData fike
+        //Here we save this.iterations, learning rate, cost, loss, to metaData file and reload whenever needed, done like this to backup when i end session, or node process.
+        i++;
+      }
     }
 
     predict(word) {
@@ -142,9 +161,19 @@ const start = () => {
         return trainDataFormat(fileContent.toString());
       }
     }
-
+    lossCostFn(output, target, samples_done) {
+      // Loss function - Mean Squared Error (MSE)
+      const v = Math.pow(output - target, 2);
+      this.learnRate = this.learnRate * Math.exp(-v / this.learnRate);
+      // update model weights with adjusted learning rate
+      this.loss = v; //deviation from target, calculated on every epoch.
+      if (samples_done) this.cost = (this.loss + v) / samples_done; // Cost function - Mean Squared Error (MSE) over entire training duration.
+    }
+    loss = null;
+    cost = null;
+    iterations = 0;
     learnRate = 0.01;
-    batchSize = 3;
+    //batchSize = 3;
     patience = 5; //how much iteration to continue when model is not permorming well
     sampleSize = this.dataSet().length;
   }
