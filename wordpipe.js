@@ -12,7 +12,7 @@ const trainSetupFile = "./dataset/trainSetup";
 const trainSetupWords = trainDataFormat(
   fs.readFileSync(trainSetupFile, "utf8"),
 ).map((_) => _[0]); //collect first value—word value, not target index together.
-
+console.log(trainSetupWords);
 const pythonProcess = spawn("python", [
   "node_modules/en-words/read_english_dictionary.py",
 ]);
