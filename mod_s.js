@@ -34,12 +34,20 @@ const start = () => {
   const vocabSize = vocabulary.length;
 
   function createInputRepresentation(word) {
-    const inputRep = Array(vocabSize).fill(0);
+    const inputRep = Array(vocabSize).fill(1);
+    let tempState = [];
     for (let i = 0; i < word.length; i++) {
-      const charIndex = vocabulary.indexOf(word[i]);
-      const positionalValue = i + 1; // Start positional encoding from 1
-      inputRep[charIndex] = charIndex + positionalValue;
+      if (tempState.includes(word[i])) continue;
+      const positionalValue = vocabulary.indexOf(word[i]);
+      const freq = word.split("").filter((_) => _ === word[i]).length;
+      const smoother = Math.cos(positionalValue + 1);
+      inputRep[positionalValue] = smoother + freq + (i + 1); //+1 incase if it's zero
+      tempState.push(word[i]); //store so we don't encounter it again
     }
+    for (const v in inputRep) {
+      inputRep[v] += inputRep.reduce((pv, cv) => pv + cv) / inputRep.length; //to create diverse-re-reproduced values, the mean is calculated after updating just a value; thus this changes mean, and when re-calculated it gives a different value to next array-value in loop. So all values are unique, but constant. What a pattern to learn!
+    }
+
     return inputRep;
   }
 
@@ -89,7 +97,7 @@ const start = () => {
       // Generate input representation with positional encoding
       const inputRep = createInputRepresentation(word);
       const MOBJ = this.MOBJ;
-      const actiFn = this.actiFn;
+      const actiFn = this.actiFn; //static
       let output;
       let i = 1;
       const mIL = Object.values(MOBJ).length;
@@ -139,7 +147,7 @@ const start = () => {
 
     randomParams(min = 0.000001, max = 0.0015) {
       //Returns a random number between min (inclusive) and max (exclusive)
-      return Math.randomParams() * (max - min) + min;
+      return Math.random() * (max - min) + min;
     }
 
     dataSet(path = "./dataset/trainSetup") {
